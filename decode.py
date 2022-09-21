@@ -118,7 +118,6 @@ class Decoder:
 
     def decodeMessageSize(self, img: EncodedImage):
         msg_size = 0
-        # Do something
         msg_size_decoded = ""
         try:
             for x in range(0, img.getWidth()):
