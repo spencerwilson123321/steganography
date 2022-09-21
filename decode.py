@@ -152,7 +152,6 @@ class Decoder:
                         message_bits += encoded_bit
         except Done:
             pass
-        print(f"Decoded Message in Binary: {message_bits}")
         for x in range(0, msg_size*8, 8):
             bits = message_bits[x:x+8]
             decoded_message += chr(int(bits, 2))
