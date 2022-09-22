@@ -89,6 +89,16 @@ if __name__ == "__main__":
     # 3. Generate a secret key if it doesn't exist.
     generate_key()
 
+    # 4. Create fixed length 64 bit bitstring encrypted header which will store: encrypted input file size and input file name
+    # Here is how we do it:
+    # Get the encrypted file size and file name.
+    # Convert the encrypted file size to a 32 bit bitstring, convert the filename to a 32 bit bitstring.
+    # Test to see how big a 64 bit bitstring is when encrypted. This number should be constant I belive.
+    # Once we know what the encrypted header size is, then we can read and decrypt it easily. This way the 
+    # filesize and filename are hidden.
+    # Prepend the encrypted header to the encrypted file bytes.
+    # Done.
+
     # 4. Encrypt the input file aka creating the ciphertext.
     encrypted_bytes = encrypt_bytes(file_bytes)
 
@@ -97,7 +107,14 @@ if __name__ == "__main__":
         print(f"ERROR: Input file too large to be stored in given cover image.", file=stderr)
         exit(1)
     
-    
+    # 6. Convert the encrypted bytes into bitstring format.
+
+    # 8. Prepend the en
+
+    # 9. Place encrypted bits into the LSBs of the cover image.
+
+    # 8. 
+
     
     # input_file_bits = ""
     # with open("assignment-01.pdf", 'rb') as input_file:
