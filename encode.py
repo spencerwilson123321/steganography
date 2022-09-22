@@ -1,21 +1,20 @@
-from lib2to3.pytree import convert
 import cv2
 import numpy as np
 import argparse
 from sys import exit, stderr
-from os.path import isfile
+from encryption import encrypt_bytes, generate_key
+from utils import verify_args, check_filesize, read_file_bytes
+from bitstring import BitArray
+from cryptography.fernet import Fernet
 
 # Command Line Arguments
 parser = argparse.ArgumentParser("./encode.py")
 
-parser.add_argument("INPUT_FILE_PATH")
-parser.add_argument("-o", dest="OUTPUT_FILE_PATH", required=False, default="stego_image.bmp")
+parser.add_argument("INPUT_FILE")
+parser.add_argument("COVER_IMAGE_FILE")
+parser.add_argument("-o", dest="OUTPUT_FILE", required=False, default="stego_image.bmp")
+parser.add_argument("-n", dest="lsbcount", required=False, default="1")
 args = parser.parse_args()
-
-# Verify inputs
-if not isfile(args.INPUT_FILE_PATH):
-    print(f"ERROR: Input file '{args.INPUT_FILE_PATH}' not found", file=stderr)
-    exit(1)
 
 def int_to_binary(num: int, num_bits: int):
     binary = bin(num)[2:]
@@ -77,6 +76,38 @@ def encode(bin_msg, image):
         pass
 
 if __name__ == "__main__":
+    
+    # 1. Validate command line inputs. Checks that input files exist and that cover image is of type BMP.
+    verify_args(args)
+
+    # 2. Read bytes from input file.
+    file_bytes = read_file_bytes(args.INPUT_FILE)
+    if not file_bytes:
+        print(f"ERROR: Failed to read any bytes from input file, possibly file empty.")
+        exit(1)
+    
+    # 3. Generate a secret key if it doesn't exist.
+    generate_key()
+
+    # 4. Encrypt the input file aka creating the ciphertext.
+    encrypted_bytes = encrypt_bytes(file_bytes)
+
+    # 5. Check that the given input file will fit into the cover image.
+    if not check_filesize(encrypted_bytes, args.COVER_IMAGE_FILE, int(args.lsbcount)):
+        print(f"ERROR: Input file too large to be stored in given cover image.", file=stderr)
+        exit(1)
+    
+    
+    
+    # input_file_bits = ""
+    # with open("assignment-01.pdf", 'rb') as input_file:
+    #     file_bytes = input_file.read()
+    #     for byte_as_int in file_bytes:
+    #         byte = BitArray(uint=byte_as_int, length=8)
+    #         input_file_bits += byte.bin
+    # print(len(input_file_bits))
+
+    exit(1)
 
     img = cv2.imread(args.INPUT_FILE_PATH)
     msg = input("Enter a message to hide: ")
