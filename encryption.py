@@ -25,3 +25,6 @@ def read_key() -> bytes:
     with open("secret.key", "rb") as keyfile:
         key = keyfile.read()
     return key
+
+def decrypt_bytes(encrypted_bytes: bytes) -> bytes:
+    return b''
