@@ -27,4 +27,10 @@ def read_key() -> bytes:
     return key
 
 def decrypt_bytes(encrypted_bytes: bytes) -> bytes:
-    return b''
+    key = read_key()
+    if not key:
+        print(f"ERROR: Key file empty or unable to read bytes.", file=stderr)
+        exit(1)
+    fernet = Fernet(key)
+    decrypted_bytes = fernet.decrypt(encrypted_bytes)
+    return decrypted_bytes

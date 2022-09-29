@@ -43,6 +43,7 @@ if __name__ == "__main__":
     filename = get_filename(args.INPUT_FILE)
     filename_bytes = bytes(filename, encoding="utf-8")
     filename_bytes_encrypted = encrypt_bytes(filename_bytes)
+    print(filename_bytes_encrypted)
 
     # Get the encrypted filename size.
     encrypted_filename_size = len(filename_bytes_encrypted)

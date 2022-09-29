@@ -78,6 +78,7 @@ def create_header_encrypted(encrypted_filesize: int, filename_encrypted_size: in
     # Take enc filesize and convert to BitArray 32 bit string, and then encrypt the 32 bit string.
     binary_encrypted_filesize = BitArray(uint=encrypted_filesize, length=32)
     filesize_encrypted_bytes = encrypt_bytes(bytes(binary_encrypted_filesize.bin, encoding="utf-8"))
+    print(filesize_encrypted_bytes)
     print(f"Filesize encrypted bytes length: {len(filesize_encrypted_bytes)}")
     
     # filename size
